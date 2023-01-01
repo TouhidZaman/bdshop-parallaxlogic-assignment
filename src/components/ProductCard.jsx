@@ -32,7 +32,7 @@ const ProductCard = ({ product }) => {
           ></Rating>
           ({rating?.count})
         </p>
-        <p className="font-semibold">Price: {price} BDT</p>
+        <p className="font-semibold">Price: ${price}</p>
       </div>
       <div className="absolute bottom-3 left-0 w-full px-8 flex justify-between">
         <button
