@@ -11,6 +11,7 @@ const Home = () => {
   const [error, setError] = useState("");
   const { keywords } = useContext(DataProviderContext);
   let filteredProducts = [];
+  let content = null;
 
   useEffect(() => {
     axiosInstance
@@ -25,47 +26,61 @@ const Home = () => {
       });
   }, []);
 
+  //Applying search filtering
   if (keywords) {
+    let keywordsArray = keywords.split(" ");
     filteredProducts = products.filter((product) =>
-      product.title?.toLowerCase().includes(keywords?.toLowerCase(keywords))
+      keywordsArray.some(
+        (keyword) =>
+          product.title?.toLowerCase().includes(keyword.toLowerCase()) ||
+          product.category?.toLowerCase().includes(keyword.toLowerCase())
+      )
     );
   } else {
     filteredProducts = products;
   }
 
+  if (loading) {
+    content = <Loading />;
+  } else if (error) {
+    content = <h1 className="text-center mt-10 text-2xl">{error} </h1>;
+  } else if (!filteredProducts.length) {
+    content = <h1 className="text-center mt-10 text-2xl">Oops no products found</h1>;
+  } else {
+    content = (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-7xl gap-8 mx-auto my-10">
+        {filteredProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    );
+  }
+
   const activeClass = "text-white  bg-blue-500 border-white";
 
   return (
-    <div className="max-w-7xl gap-14 md:mx-16 my-10">
-      <div className="mb-10 flex justify-between">
-        <h1 className="text-2xl text-blue-500 font-semibold">All Products</h1>
-        <div className="flex justify-end gap-2">
-          <span className="px-3 py-2 font-semibold">Sort By:</span>
+    <div className="max-w-7xl gap-14 m-8 lg:mx-16">
+      <div className="mb-10 flex flex-col lg:flex-row lg:justify-between">
+        <h1 className="text-xl mb-4 lg:mb-0 lg:text-2xl text-blue-500 font-semibold">
+          All Products
+        </h1>
+        <div className="flex lg:justify-end gap-2">
+          <span className="px-2 md:px-3 py-1 md:py-2 md:font-semibold">
+            Sort By:
+          </span>
           <button
-            className={`border px-3 py-2 rounded-full font-semibold ${activeClass}`}
+            className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold ${activeClass}`}
           >
             Ascending
           </button>
-          <button className={`border px-3 py-2 rounded-full font-semibold`}>
+          <button
+            className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold`}
+          >
             Descending
           </button>
         </div>
       </div>
-      {loading ? (
-        <Loading />
-      ) : error ? (
-        <h1>{error} </h1>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-7xl gap-8 mx-auto my-10">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      )}
-
-      {!filteredProducts.length ? (
-        <h1 className="text-center mt-10 text-2xl">Oops no products found</h1>
-      ) : null}
+      {content}
     </div>
   );
 };

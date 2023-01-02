@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BiSearchAlt } from "react-icons/bi";
 import { BsFillCartFill } from "react-icons/bs";
 import { DataProviderContext } from "context/DataProviderContext";
@@ -7,28 +7,37 @@ import { DataProviderContext } from "context/DataProviderContext";
 const Navbar = () => {
   const { setKeywords } = useContext(DataProviderContext);
   const [search, setSearch] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    setKeywords(search);
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+  };
 
   const handleEnterKeyDown = (key) => {
     if (key === "Enter") {
-      setKeywords(search);
+      handleSearch();
     }
   };
 
   return (
     <nav className="h-14 bg-blue-500 w-full mx-auto px-2 md:px-16">
-      <ul className="h-full  mx-auto flex justify-between items-center gap-3 font-semibold text-white">
-        <h1 className="text-xl">BD-Shop</h1>
+      <ul className="h-full  mx-auto flex justify-between items-center gap-2 lg:gap-3 font-semibold text-white">
+        <h1 className="text-xl">BDShop</h1>
         <li className="flex bg-white mx-auto h-9 w-full max-w-lg  rounded-full pr-3">
           <input
-            className="h-9 rounded-full w-full text-sm border-0 pl-4 focus:ring-0 outline-none text-black"
+            className="h-9 rounded-full w-[90%] lg:w-full text-sm border-0 pl-4 focus:ring-0 outline-none text-black"
             type="text"
             value={search}
             name="search"
-            placeholder="Type product name here to search"
+            placeholder="Type product or category name here to search"
             onKeyDown={(e) => handleEnterKeyDown(e.key)}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button onClick={() => setKeywords(search)}>
+          <button onClick={() => handleSearch()}>
             <BiSearchAlt className="text-blue-500" />
           </button>
         </li>

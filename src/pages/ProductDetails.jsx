@@ -34,11 +34,11 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 max-w-7xl gap-8 md:mx-16 my-10">
-      <h1 className="text-2xl text-blue-500 font-semibold">
+    <div className="grid grid-cols-1 max-w-7xl gap-8 m-8 lg:mx-16">
+      <h1 className="text-xl lg:text-2xl text-blue-500 font-semibold">
         Product Details View Page
       </h1>
-      <div className="shadow-lg rounded-3xl border relative  p-3 flex">
+      <div className="shadow-lg rounded-3xl border relative  p-3 flex flex-col lg:flex-row">
         <div className="mr-4 w-52">
           <img
             className="rounded-md h-36 w-36 mb-2"
