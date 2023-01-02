@@ -1,9 +1,10 @@
-import { DataProviderContext } from "context/DataProviderContext";
 import React, { useContext } from "react";
+import { useNavigate } from "react-router";
 import { BsFillCartFill } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 import Rating from "react-rating";
-import { useNavigate } from "react-router";
+
+import { DataProviderContext } from "context/DataProviderContext";
 
 const ProductCard = ({ product, isInCart }) => {
   const { addToCart, removeFromCart } = useContext(DataProviderContext);
@@ -73,7 +74,7 @@ const ProductCard = ({ product, isInCart }) => {
             View Details
           </button>
           <button
-            title="Add to wishlist"
+            title="Add to Cart"
             className="bg-blue-500 py-1 px-2 rounded-full"
             onClick={() => addToCart(product)}
           >

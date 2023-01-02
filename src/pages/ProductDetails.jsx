@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BsFillCartFill } from "react-icons/bs";
-import axiosInstance from "utils/axios.config";
 import Rating from "react-rating";
 import { FaStar } from "react-icons/fa";
+
+import axiosInstance from "utils/axios.config";
 import Loading from "components/Loading";
+import { DataProviderContext } from "context/DataProviderContext";
 
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { addToCart } = useContext(DataProviderContext);
 
   useEffect(() => {
     axiosInstance
@@ -53,8 +56,9 @@ const ProductDetails = () => {
               Back to products
             </Link>
             <button
-              title="Add to wishlist"
+              title="Add to Cart"
               className="bg-blue-500  py-1 px-2 rounded-full"
+              onClick={() => addToCart(product)}
             >
               <BsFillCartFill className="text-white" />
             </button>
