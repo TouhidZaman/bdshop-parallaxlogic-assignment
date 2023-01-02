@@ -4,6 +4,7 @@ import Layout from "layout/Layout";
 import Home from "pages/Home";
 import NotFound from "pages/NotFound";
 import ProductDetails from "pages/ProductDetails";
+import Cart from "pages/Cart";
 
 const routes = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const routes = createBrowserRouter([
       {
         path: "/product/:productId",
         element: <ProductDetails />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
       },
       {
         path: "*",

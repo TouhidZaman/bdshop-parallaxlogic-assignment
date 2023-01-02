@@ -8,14 +8,19 @@ import { DataProviderContext } from "context/DataProviderContext";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState("asc");
   const [error, setError] = useState("");
   const { keywords } = useContext(DataProviderContext);
   let filteredProducts = [];
   let content = null;
 
   useEffect(() => {
+    let endpoint = "products";
+    if (sortBy === "desc") {
+      endpoint = "products?sort=desc";
+    }
     axiosInstance
-      .get("products")
+      .get(endpoint)
       .then((data) => {
         setProducts(data.data);
         setLoading(false);
@@ -24,7 +29,7 @@ const Home = () => {
         setLoading(false);
         setError("Oops, something went wrong");
       });
-  }, []);
+  }, [sortBy]);
 
   //Applying search filtering
   if (keywords) {
@@ -69,12 +74,18 @@ const Home = () => {
             Sort By:
           </span>
           <button
-            className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold ${activeClass}`}
+            className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold ${
+              sortBy === "asc" ? activeClass : ""
+            }`}
+            onClick={() => setSortBy("asc")}
           >
             Ascending
           </button>
           <button
-            className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold`}
+            className={`border px-2 md:px-3 py-1 md:py-2 rounded-full md:font-semibold ${
+              sortBy === "desc" ? activeClass : ""
+            }`}
+            onClick={() => setSortBy("desc")}
           >
             Descending
           </button>
